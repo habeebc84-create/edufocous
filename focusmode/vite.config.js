@@ -7,6 +7,8 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     strictPort: false,
+    // Allow proxied preview hosts (e.g. *.e2b.app) and tunnel domains.
+    allowedHosts: [".e2b.app", "localhost", "127.0.0.1"],
   },
   preview: {
     host: "0.0.0.0",
