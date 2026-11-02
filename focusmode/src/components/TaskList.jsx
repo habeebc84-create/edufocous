@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { Check, Plus, Trash2 } from "lucide-react";
 
-const INITIAL = [
-  { id: 1, text: "Review chapter 4 notes", done: true },
-  { id: 2, text: "Draft the physics summary sheet", done: false },
-  { id: 3, text: "Solve 10 practice problems", done: false },
-];
-
-export default function TaskList({ onAllDone }) {
-  const [tasks, setTasks] = useState(INITIAL);
+/** Controlled task list — state lives in App so other panels can read it. */
+export default function TaskList({ tasks, setTasks, onAllDone }) {
   const [value, setValue] = useState("");
 
   const doneCount = tasks.filter((t) => t.done).length;
@@ -32,7 +26,7 @@ export default function TaskList({ onAllDone }) {
   const remove = (id) => commit(tasks.filter((t) => t.id !== id));
 
   return (
-    <section id="tasks" className="glass mt-6 rounded-3xl p-6 sm:p-8">
+    <section id="tasks" className="glass mt-6 scroll-mt-24 rounded-3xl p-6 sm:p-8">
       <div className="flex items-baseline justify-between">
         <h2 className="text-lg font-semibold text-white">Today&rsquo;s tasks</h2>
         <span className="text-xs text-white/40">

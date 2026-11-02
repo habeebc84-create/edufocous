@@ -9,6 +9,7 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import AICoach from "./components/AICoach.jsx";
 import FocusTimer from "./components/FocusTimer.jsx";
 import TaskList from "./components/TaskList.jsx";
 import { Logo } from "./components/Logo.jsx";
@@ -37,8 +38,15 @@ const FEATURES = [
   },
 ];
 
+const INITIAL_TASKS = [
+  { id: 1, text: "Review chapter 4 notes", done: true },
+  { id: 2, text: "Draft the physics summary sheet", done: false },
+  { id: 3, text: "Solve 10 practice problems", done: false },
+];
+
 export default function App() {
   const [presetId, setPresetId] = useState("focus");
+  const [tasks, setTasks] = useState(INITIAL_TASKS);
   const [sessions, setSessions] = useState(0);
   const [focusMinutes, setFocusMinutes] = useState(0);
   const [toast, setToast] = useState(null);
@@ -74,6 +82,9 @@ export default function App() {
           <a href="#features" className="hidden transition hover:text-white sm:block">
             Features
           </a>
+          <a href="#coach" className="transition hover:text-white">
+            Study coach
+          </a>
           <a href="#timer" className="transition hover:text-white">
             Start
           </a>
@@ -105,8 +116,8 @@ export default function App() {
             .
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/55 sm:text-lg">
-            A focus timer and study workspace in one screen. Set the block, queue
-            the work, close the tabs you don&rsquo;t need.
+            A focus timer, a task queue, and an AI study coach in one screen. Set the
+            block, ask for an explanation or a quiz, close the tabs you don&rsquo;t need.
           </p>
         </section>
 
@@ -146,7 +157,13 @@ export default function App() {
             ))}
           </div>
 
-          <TaskList onAllDone={() => notify("Everything on today's list is done. Nice.")} />
+          <TaskList
+            tasks={tasks}
+            setTasks={setTasks}
+            onAllDone={() => notify("Everything on today's list is done. Nice.")}
+          />
+
+          <AICoach tasks={tasks} />
         </div>
 
         {/* Features */}
