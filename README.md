@@ -12,8 +12,14 @@ focusmode/            Vite + React + Tailwind app (deploy target)
 ## FocusMode
 
 A single-screen deep-work workspace: a wall-clock focus timer with three presets
-(25 / 5 / 15), a task queue, and session stats. Everything runs in the browser —
-no accounts, no tracking, no network calls at runtime.
+(25 / 5 / 15), a task queue, session stats, and an **AI study coach** that can
+explain a topic, generate practice questions, or turn your open tasks into a
+25-minute focus plan.
+
+Everything except the study coach runs in the browser. The coach posts to
+`api/ai.js`, a server-side function that holds `AI_API_KEY`, so the key never
+reaches the client bundle. With no key configured it answers in a clearly
+labelled **offline mode** instead of failing.
 
 ### Run locally
 
@@ -24,6 +30,19 @@ npm run dev      # http://localhost:5173
 npm run build    # -> focusmode/dist
 npm run preview  # serve the production build
 ```
+
+### AI study coach
+
+`POST /api/ai` with `{ mode: "explain" | "quiz" | "plan", text?, tasks? }`.
+
+- **Production:** runs as a Vercel Node function (`focusmode/api/ai.js`).
+- **Local:** mounted by a small Vite plugin in `vite.config.js`, so `npm run dev`
+  serves the same route at `/api/ai` — no `vercel dev` needed.
+- **Provider:** any OpenAI-compatible API. Defaults to
+  `https://api.openai.com/v1` + `gpt-4o-mini`; override with `AI_BASE_URL`
+  and `AI_MODEL`.
+- **No key:** returns `{ ok: true, offline: true }` with study-technique
+  guidance, and the UI labels it clearly.
 
 ### Deploy
 
